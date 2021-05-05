@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% block title %}Signup{% endblock title %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+<br>
+<br>
+<br>
+<br>
+<div class="ui purple piled right floated segment">
+
+<center>
+<h1>{% trans "Sign Up" %}</h1>
+
+<p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">Login</a>.{% endblocktrans %}</p>
+</center>
+<div class="ui grid">
+  <div class="fifteen wide column">
+    <form class="signup ui form" id="signup_form" method="post" action="{% url 'account_signup' %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+      {% if redirect_field_value %}
+      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+      {% endif %}
+      <button type="submit" class="ui purple button">{% trans "Sign Up" %}<i class="angle double right icon"></i></button>
+    </form>
+  </div>
+</div>
+</div>
+{% load static %}<img src="{% static "socialnet.gif" %}" class'ui image'width="700" height="500"style="float:left; vertical-align:top;"/>
+
+{% endblock %}

@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block title %}
+my profile
+{% endblock title %}
+
+{% block content %}
+<br>
+<br>
+<br>
+<!-- MODAL -->
+<div class="ui modal mymodal">
+  <i class="close icon"></i>
+  <div class="header">
+    Update your Profile
+  </div>
+  <div class="image content">
+    <div class="ui medium image">
+      <img src="{{profile.avatar.url}}">
+    </div>
+    <div class="description">
+      <div class="ui header">Provide some additional/newest info about you </div>
+     <form action="" method="POST" class="ui form" enctype='multipart/form-data'>
+        {% csrf_token %}
+        {{form.as_p}}
+    </div>
+  </div>
+  <div class="actions">
+    <button type='submit' class="ui positive right labeled icon button">
+      Update
+      <i class="checkmark icon"></i>
+    </button>
+    </form>
+  </div>
+</div>
+
+
+
+<div class="ui segment">
+    {% if confirm %}
+        <div class="ui violet message">Your profile has been updated</div>
+    {% endif %}
+    <h3>My Profile: {{request.user}}</h3>
+    <div class="ui grid">
+        <div class='row'>
+            <div class='six wide column'>
+                <img class="ui medium rounded image" src={{profile.avatar.url}}>
+                <div class="row mt-5">
+                    <button class='ui secondary button' id='modal-btn'>Update your profile</button>
+                </div>
+            </div>
+            <div class="ten wide column">
+                <table class="ui table">
+                    <tbody>
+                        <tr>
+                            <td><b>Username</td>
+                            <td>{{profile.user}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>First Name</td>
+                            <td>{{profile.first_name}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Last Name</td>
+                            <td>{{profile.last_name}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Bio</td>
+                            <td>{{profile.bio}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Number of Friends</td>
+                            <td>{{profile.get_friends_no}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Friends</td>
+                            <td>
+                                    {% for friend in profile.get_friends %}
+                                    {% load static %}
+                                        <div class='ui tiny segment'><i class="large user icon"></i> {{friend}}</div>
+                                    {% endfor %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>Number of Posts</td>
+                            <td>{{profile.get_posts_no}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Number of Likes Given</td>
+                            <td>{{profile.get_likes_given_no}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Number of Likes Received</b></td>
+                            <td>{{profile.get_likes_recieved_no}}</td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="eleven wide column">
+                {% for post in profile.get_posts %}
+        <div class="ui fluid card">
+            <div class="content">
+                <div class="right floated meta">
+                <div class="ui grid">
+                    <div class="row">
+                        {% ifequal request.user post.author.user %}
+                            <a href="{% url 'posts:post-update' post.pk %}"><button class="ui button bwhite-lg ">
+                            <i class="pencil alternate icon"></i>Update</button></a>
+                            <a href="{% url 'posts:post-delete' post.pk %}"><button class="ui button bwhite-lg ">
+                            <i class="trash alternate outline icon"></i>Delete</button></a>
+                        {% endifequal %}
+                    </div>
+                </div>
+                    
+                </div>
+                <img class="ui avatar image" src={{post.author.avatar.url}}> 
+                {{ post.author.user }} </a>
+            </div>
+            <div class="ui fluid image">
+                {% if post.image %}
+                    <img src={{post.image.url}}>
+                {% endif %}
+            </div>
+            <div class="content">
+                <p> {{ post.content }} </p>
+            </div>
+            <div class="extra content">
+                <div class="mb-5">
+                <i class="ui clock outline icon"></i>{{ post.created|timesince}} ago
+                </div>
+
+            </div>
+        </div>
+
+
+        {% endfor %}
+    </div>
+
+{% endblock content %}

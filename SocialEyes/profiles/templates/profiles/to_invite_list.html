@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Invite friends
+{% endblock title %}
+
+{% block content %}
+ <br>
+<br>
+<br>
+    <ul>
+        {% for item in qs %}
+            <div class="ui segment">
+            <div class = "ui grid">
+                <div class="row">
+                    <div class='three wide column'>
+                        <img class='ui small circular image' src={{item.avatar.url}}>
+                    </div>
+                    <div class='thirteen wide column'>
+                        <h3>{{item.user}}</h3>
+                        <p>{{item.bio}}</p>
+                        <a href={{item.get_absolute_url}}><button class='ui primary button mb-5 w-big'>See profile</button></a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </ul>
+{% endblock content %}
